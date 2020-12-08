@@ -9,7 +9,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Repository", "Web.Repository\Web.Repository.csproj", "{DFC93E51-468C-41F3-A8C1-995E85E9C7AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Service", "Web.Service\Web.Service.csproj", "{490C91B8-E09E-4C50-8069-FA5BFC4F00E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Service", "Web.Service\Web.Service.csproj", "{490C91B8-E09E-4C50-8069-FA5BFC4F00E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InitData", "InitData", "{C7A3ED19-2643-428F-9320-58B003316BA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{119571AE-4C49-4959-8A7F-19366C7AF426}"
+	ProjectSection(SolutionItems) = preProject
+		InitData\SQL\Core.Cource.Table.sql = InitData\SQL\Core.Cource.Table.sql
+		InitData\SQL\Core.CourceDetail.Table.sql = InitData\SQL\Core.CourceDetail.Table.sql
+		InitData\SQL\Core.Department.Table.sql = InitData\SQL\Core.Department.Table.sql
+		InitData\SQL\Core.Schema.sql = InitData\SQL\Core.Schema.sql
+		InitData\SQL\Core.Student.Table.sql = InitData\SQL\Core.Student.Table.sql
+		InitData\SQL\Core.StudentDetail.Table.sql = InitData\SQL\Core.StudentDetail.Table.sql
+		InitData\SQL\Core.Teacher.Table.sql = InitData\SQL\Core.Teacher.Table.sql
+		InitData\SQL\Core.User.Table.sql = InitData\SQL\Core.User.Table.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +50,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{119571AE-4C49-4959-8A7F-19366C7AF426} = {C7A3ED19-2643-428F-9320-58B003316BA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3756D7ED-FAED-41C6-9CC7-0ECE4F8D07D3}
