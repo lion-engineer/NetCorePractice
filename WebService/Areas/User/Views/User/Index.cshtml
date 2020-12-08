@@ -1,0 +1,182 @@
+﻿@using Web.Common.Table
+@using Web.Service
+@model List<User>
+@{
+    Layout = "_Layout";
+    var students = ViewBag.Student as List<Student>;
+}
+
+<div v-cloak id="app-1">
+    <button id="btnGetUser" v-on:click="getUsers">取得使用者</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>身分證字號</td>
+                <td>姓名</td>
+                <td>聯絡電話</td>
+                <td>地址</td>
+                <td>生日</td>
+                <td>使用者類型</td>
+                <td>使用者類型名稱</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in users">
+                <td>{{item.UserNo}}</td>
+                <td>{{item.Name}}</td>
+                <td>{{item.Phone}}</td>
+                <td>{{item.Address}}</td>
+                <td>{{item.Birthday | dateFormat_yyyyMMdd}}</td>
+                <td>{{item.UserType}}</td>
+                <td>{{item.UserTypeName}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div v-cloak id="app-2">
+    <button id="btnGetStudent" v-on:click="getStudent">取得學生</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>學號</th>
+                <th>名字</th>
+                <th>系所名稱</th>
+                <th>年級</th>
+                <th>入學月份</th>
+                <th>是否畢業</th>
+                <th>畢業月份</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in students">
+                <td>{{item.StudentNo}}</td>
+                <td>{{item.User.Name}}</td>
+                <td>{{item.Department.Name}}</td>
+                <td>{{item.Grade}}</td>
+                <td>{{item.StartYear | dateFormat_yyyyMMdd}}</td>
+                <td>{{item.IsGraduation | booleanFormat}}</td>
+                <td>{{item.EndYear | dateFormat_yyyyMMdd}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div v-cloak id="app-3">
+    <button id="btnGetTeacher" v-on:click="getTeacher">取得教師</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>教師編號</th>
+                <th>姓名</th>
+                <th>系所</th>
+                <th>是否在職</th>
+                <th>到職日</th>
+                <th>是否離職</th>
+                <th>離職日</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="teacher in teachers">
+                <td>{{teacher.TeacherNo}}</td>
+                <td>{{teacher.User.Name}}</td>
+                <td>{{teacher.Department.Name}}</td>
+                <td>{{teacher.IsOnBoard | booleanFormat}}</td>
+                <td>{{teacher.TakeOfficeDate | dateFormat_yyyyMMdd}}</td>
+                <td>{{teacher.IsLeave | booleanFormat}}</td>
+                <td>{{teacher.LeaveOfficeDate | dateFormat_yyyyMMdd }}</td>
+            </tr>
+        </tbody>        
+    </table>
+</div>
+
+@section Scripts{ 
+    <script>
+
+        Vue.filter('dateFormat_yyyyMMdd', function (datetime) {
+            if (datetime == null || Date == undefined) {
+                return datetime;
+            }
+            let rDate = new Date(datetime);
+
+            let year = rDate.getFullYear();
+            let month = rDate.getMonth() + 1;
+            let day = rDate.getDate();
+
+            let result = year + '/' + month + '/' + day;
+            return result;
+        });
+        Vue.filter('booleanFormat', function (val) {
+            return val ? '是' : '否';
+        });
+
+        var app = new Vue({
+            el: '#app-1',
+            data: {
+                users: []
+            },
+            methods: {
+                getUsers: function () {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetUser")',
+                        //dataType: 'json',
+                        data: {},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.users = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            }
+        });
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                students:[]
+            },
+            methods: {
+                getStudent: function () {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetStudents")',
+                        //dataType: 'json',
+                        data: {},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.students = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            }
+        });
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                teachers:[]
+            },
+            methods: {
+                getTeacher: function () {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetTeachers")',
+                        //dataType: 'json',
+                        data: {},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.teachers = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            }
+        });
+    </script>
+}
