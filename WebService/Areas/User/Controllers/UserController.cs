@@ -13,11 +13,16 @@ namespace WebService.Areas.User
         private readonly IUserService _userService;
         private readonly IStudentService _studentService;
         private readonly ITeacherService _teacherService;
-        public UserController(IUserService userService, IStudentService studentService, ITeacherService teacherService)
+        private readonly ICourceService _courceService;
+        public UserController(IUserService userService,
+                              IStudentService studentService,
+                              ITeacherService teacherService,
+                              ICourceService courceService)
         {
             _userService = userService;
             _studentService = studentService;
             _teacherService = teacherService;
+            _courceService = courceService;
         }
         public IActionResult Index()
         {
@@ -46,10 +51,24 @@ namespace WebService.Areas.User
         }
 
         [HttpPost]
+        public IActionResult GetCourse() 
+        {
+            var courses = _courceService.GetCources();
+            return Json(courses);
+        }
+
+        [HttpPost]
         public IActionResult GetStudentDetails() 
         {
             var studentDetails = _studentService.GetStudentDetails();
             return Json(studentDetails);
+        }
+
+        [HttpPost]
+        public IActionResult GetCourseDetails(long courseId) 
+        {
+          var detail =  _courceService.GetCourseDetail(courseId);
+            return Json(detail);
         }
     }
 }

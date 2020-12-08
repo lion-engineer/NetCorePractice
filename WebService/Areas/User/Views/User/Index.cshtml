@@ -125,6 +125,35 @@
         </tbody>
     </table>
 </div>
+<div v-cloak id="app-5">
+    <button id="btnGetCourse" v-on:click="getCourses">取得課程</button>
+    <table class="table table-bordered">
+      <thead>
+          <tr>
+              <th>課程編號</th>
+              <th>課程名稱</th>
+              <th>開課系所</th>
+              <th>開課年級</th>
+              <th>最小人數</th>
+              <th>最大人數</th>
+              <th></th>
+          </tr>
+      </thead>
+        <tbody>
+            <tr v-for="item in courses">
+                <td>{{item.CourceNo}}</td>
+                <td>{{item.CourceName}}</td>
+                <td>{{item.Department.Name}}</td>
+                <td>{{item.Grade}}</td>
+                <td>{{item.MinStudent}}</td>
+                <td>{{item.MaxStudent}}</td>
+                <td>
+                    <button v-on:click="getCourseDetails(item.CourceId)">開課紀錄</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 @section Scripts{ 
     <script>
@@ -231,6 +260,47 @@
                         beforeSend: function () { },
                         success: function (data) {
                             self.details = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            }
+        });
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                courses: [],
+                details:[]
+            },
+            methods: {
+                getCourses: function () {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetCourse")',
+                        //dataType: 'json',
+                        data: {},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.courses = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                },
+                getCourseDetails: function (item) {
+                    console.log(item);
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetCourseDetails")',
+                        //dataType: 'json',
+                        data: { courseId: item},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.details = data;
+                            console.log(self.details);
                         },
                         complete: function () { },
                         error: function () { }

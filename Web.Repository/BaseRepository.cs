@@ -15,11 +15,7 @@ namespace Web.Repository
         where TEntity:class
     {
         private readonly WebContext _db;
-        protected DbSet<TEntity> Set;
-        public BaseRepository()
-        {
-
-        }
+        protected DbSet<TEntity> Set;        
 
         public BaseRepository(WebContext db)
         {
