@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Web.Service
     public interface IStudentService
     {
         List<Student> GetStudents();
+        List<StudertDetailViewModel> GetStudentDetails();
     }
 
     public class StudentService : IStudentService
@@ -23,6 +25,11 @@ namespace Web.Service
         public List<Student> GetStudents()
         {
             return _studentRepository.GetStudents().ToList();
+        }
+
+        public List<StudertDetailViewModel> GetStudentDetails() 
+        {
+            return _studentRepository.GetStudentDetails().ToList();
         }
     }
 }

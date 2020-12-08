@@ -44,5 +44,12 @@ namespace WebService.Areas.User
             var teachers = _teacherService.GetTeachers();
             return Json(teachers);
         }
+
+        [HttpPost]
+        public IActionResult GetStudentDetails() 
+        {
+            var studentDetails = _studentService.GetStudentDetails();
+            return Json(studentDetails);
+        }
     }
 }

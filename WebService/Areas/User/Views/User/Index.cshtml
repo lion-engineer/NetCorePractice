@@ -88,6 +88,43 @@
         </tbody>        
     </table>
 </div>
+<div v-cloak id="app-4">
+    <button id="btnGetStudentDetail" v-on:click="getStudentDetails">取得學生成績</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>學號</th>
+                <th>學生姓名</th>
+                <th>是否及格</th>
+                <th>分數</th>
+                <th>課程編號</th>
+                <th>課程名稱</th>
+                <th>課程系所</th>
+                <th>授課教師</th>
+                <th>開課日期</th>
+                <th>是否開課</th>
+                <th>結業日期</th>
+                <th>是否結束</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in details">
+                <td>{{item.StudentNo}}</td>
+                <td>{{item.Name}}</td>
+                <td>{{item.IsPass | booleanFormat}}</td>
+                <td>{{item.Score}}</td>
+                <td>{{item.CourceNo}}</td>
+                <td>{{item.CourceName}}</td>
+                <td>{{item.DepartmentName}}</td>
+                <td>{{item.TeacherName}}</td>
+                <td>{{item.StartDate | dateFormat_yyyyMMdd}}</td>
+                <td>{{item.IsOpen | booleanFormat}}</td>
+                <td>{{item.EndDate | dateFormat_yyyyMMdd}}</td>
+                <td>{{item.IsFinished | booleanFormat}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 @section Scripts{ 
     <script>
@@ -171,6 +208,29 @@
                         beforeSend: function () { },
                         success: function (data) {
                             self.teachers = data;
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            }
+        });
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                details:[]
+            },
+            methods: {
+                getStudentDetails: function () {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetStudentDetails")',
+                        //dataType: 'json',
+                        data: {},
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.details = data;
                         },
                         complete: function () { },
                         error: function () { }
