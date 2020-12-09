@@ -98,24 +98,28 @@ namespace WebService
 
         private void RegisteRepositories(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            var asmRepositories = (from a in assemblies
-                                   where a.FullName.Contains(".Repository")
-                                   select a);
-            foreach (var asmRepository in asmRepositories)
-            {
-                var types = (from t in asmRepository.GetTypes()
-                             where t.Name.EndsWith("Repository")
-                             && t.IsPublic
-                             select t).ToArray<Type>();
+            assemblies.Where(i => i.FullName.Contains(".Repository"))
+                     .SelectMany(i => i.GetTypes())
+                     .Where(i => i.IsPublic && i.Name.EndsWith("Repository"))
+                     .ToList().ForEach(i => i.GetInterfaces().ToList().ForEach(j => services.AddTransient(j, i)));
+            //var asmRepositories = (from a in assemblies
+            //                       where a.FullName.Contains(".Repository")
+            //                       select a);
+            //foreach (var asmRepository in asmRepositories)
+            //{
+            //    var types = (from t in asmRepository.GetTypes()
+            //                 where t.Name.EndsWith("Repository")
+            //                 && t.IsPublic
+            //                 select t).ToArray<Type>();
 
-                foreach (var type in types)
-                {
-                    foreach (var interfaceType in type.GetInterfaces())
-                    {
-                        services.AddTransient(interfaceType, type);
-                    }
-                }
-            }
+            //    foreach (var type in types)
+            //    {
+            //        foreach (var interfaceType in type.GetInterfaces())
+            //        {
+            //            services.AddTransient(interfaceType, type);
+            //        }
+            //    }
+            //}
         }
     }
 }
