@@ -12,6 +12,7 @@ namespace Web.Service
     {
         List<Student> GetStudents();
         List<StudertDetailViewModel> GetStudentDetails();
+        List<StudertDetailViewModel> GetStudentDetail(long StudentId);
     }
 
     public class StudentService : IStudentService
@@ -30,6 +31,10 @@ namespace Web.Service
         public List<StudertDetailViewModel> GetStudentDetails() 
         {
             return _studentRepository.GetStudentDetails().ToList();
+        }
+        public List<StudertDetailViewModel> GetStudentDetail(long StudentId)
+        {
+            return _studentRepository.GetStudentDetail(StudentId).ToList();
         }
     }
 }

@@ -63,6 +63,12 @@ namespace WebService.Areas.User
             var studentDetails = _studentService.GetStudentDetails();
             return Json(studentDetails);
         }
+        [HttpPost]
+        public IActionResult GetStudentDetail(long studentId)
+        {
+            var studentDetails = _studentService.GetStudentDetail(studentId);
+            return Json(studentDetails);
+        }
 
         [HttpPost]
         public IActionResult GetCourseDetails(long courseId) 

@@ -46,6 +46,7 @@
                 <th>入學月份</th>
                 <th>是否畢業</th>
                 <th>畢業月份</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -57,9 +58,13 @@
                 <td>{{item.StartYear | dateFormat_yyyyMMdd}}</td>
                 <td>{{item.IsGraduation | booleanFormat}}</td>
                 <td>{{item.EndYear | dateFormat_yyyyMMdd}}</td>
+                <td>
+                    <button v-on:click="getScoreList(item.StudentId)">修課成績</button>
+                </td>
             </tr>
         </tbody>
     </table>
+    <score-list :details="scoreList"></score-list>
 </div>
 <div v-cloak id="app-3">
     <button id="btnGetTeacher" v-on:click="getTeacher">取得教師</button>
@@ -85,7 +90,7 @@
                 <td>{{teacher.IsLeave | booleanFormat}}</td>
                 <td>{{teacher.LeaveOfficeDate | dateFormat_yyyyMMdd }}</td>
             </tr>
-        </tbody>        
+        </tbody>
     </table>
 </div>
 <div v-cloak id="app-4">
@@ -128,17 +133,17 @@
 <div v-cloak id="app-5">
     <button id="btnGetCourse" v-on:click="getCourses">取得課程</button>
     <table class="table table-bordered">
-      <thead>
-          <tr>
-              <th>課程編號</th>
-              <th>課程名稱</th>
-              <th>開課系所</th>
-              <th>開課年級</th>
-              <th>最小人數</th>
-              <th>最大人數</th>
-              <th></th>
-          </tr>
-      </thead>
+        <thead>
+            <tr>
+                <th>課程編號</th>
+                <th>課程名稱</th>
+                <th>開課系所</th>
+                <th>開課年級</th>
+                <th>最小人數</th>
+                <th>最大人數</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             <tr v-for="item in courses">
                 <td>{{item.CourceNo}}</td>
@@ -153,10 +158,91 @@
             </tr>
         </tbody>
     </table>
-    <course-detail :details ="details"></course-detail>
+    <course-detail :details="details"></course-detail>
 </div>
 
-@section Scripts{ 
+@section Scripts{
+
+    <script type="text/x-template" id="scoreListTemplate">
+        <div id="scoreListModal" class="modal fade in">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">修課紀錄</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>課程編號</th>
+                                <th>課程名稱</th>
+                                <th>分數</th>
+                                <th>是否及格</th>
+                                <th>開課系所</th>
+                                <th>授課教師</th>
+                                <th>開課日期</th>
+                                <th>結業日期</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in details">
+                                <td>{{item.CourceNo}}</td>
+                                <td>{{item.CourceName}}</td>
+                                <td>{{item.Score}}</td>
+                                <td>{{item.IsPass | booleanFormat}}</td>
+                                <td>{{item.DepartmentName}}</td>
+                                <td>{{item.TeacherName}}</td>
+                                <td>{{item.StartDate | dateFormat_yyyyMMdd}}</td>
+                                <td>{{item.EndDate | dateFormat_yyyyMMdd}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+    <script type="text/x-template" id="courseDetailTemplate">
+           <div id="courseDetailModal" class="modal fade in">
+			<div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">開課紀錄</h4>
+                <button type="button" class="close" data-dismiss="modal"><span >&times;</span></button>
+            </div>
+            <div class="modal-body">
+                    <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th>授課教師</th>
+            <th>開課日期</th>
+            <th>結業日期</th>
+            <th>是否開課</th>
+            <th>是否結業</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in details">
+        <td>{{item.TeacherName}}</td>
+        <td>{{item.StartDate | dateFormat_yyyyMMdd}}</td>
+        <td>{{item.EndDate | dateFormat_yyyyMMdd}}</td>
+        <td>{{item.IsOpen | booleanFormat}}</td>
+        <td>{{item.IsFinished | booleanFormat}}</td>
+</tr>
+        </tbody>
+        </table >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+    </div>
+</div>
+</div>
+    </script>
     <script>
 
         Vue.filter('dateFormat_yyyyMMdd', function (datetime) {
@@ -174,6 +260,25 @@
         });
         Vue.filter('booleanFormat', function (val) {
             return val ? '是' : '否';
+        });
+
+        Vue.component('score-list', {
+            template: '#scoreListTemplate',
+            props: {
+                details: {
+                    type: Array,
+                    required: true
+                }
+            }
+        });
+        Vue.component('course-detail', {
+            template: '#courseDetailTemplate',
+            props: {
+                details: {
+                    type: Array,
+                    required: true
+                }
+            }
         });
 
         var app = new Vue({
@@ -202,7 +307,8 @@
         var app2 = new Vue({
             el: '#app-2',
             data: {
-                students:[]
+                students: [],
+                scoreList:[]
             },
             methods: {
                 getStudent: function () {
@@ -219,6 +325,33 @@
                         complete: function () { },
                         error: function () { }
                     });
+                },
+                getScoreList: function (item) {
+                    var self = this;
+                    $.ajax({
+                        url: '@Url.Action("GetStudentDetail")',
+                        //dataType: 'json',
+                        data: { studentId: item },
+                        type: 'post',
+                        beforeSend: function () { },
+                        success: function (data) {
+                            self.scoreList = data;
+                            $('#scoreListModal').modal('toggle');
+                        },
+                        complete: function () { },
+                        error: function () { }
+                    });
+                }
+            },
+            components: {
+                'test-score': {
+                    template: '<div>{{details}}</div>',
+                    props: {
+                        details: {
+                            type: Array,
+                            required: true
+                        }
+                    }
                 }
             }
         });
@@ -309,49 +442,6 @@
                 }
             },
             components: {
-                'course-detail': {
-                    template: '<div id="courseDetailModal" class="modal fade in modal-active">\
-			<div class="modal-dialog">\
-        <div class="modal-content">\
-            <div class="modal-header">\
-                <h4 class="modal-title">開課紀錄</h4>\
-                <button type="button" class="close" data-dismiss="modal"><span >&times;</span></button>\
-            </div>\
-            <div class="modal-body">\
-                    <table class="table table-bordered">\
-        <thead>\
-            <tr>\
-            <th>授課教師</th>\
-            <th>開課日期</th>\
-            <th>結業日期</th>\
-            <th>是否開課</th>\
-            <th>是否結業</th>\
-            </tr>\
-        </thead>\
-        <tbody>\
-        <tr v-for="item in details">\
-        <td>{{item.TeacherName}}</td>\
-        <td>{{item.StartDate | dateFormat_yyyyMMdd}}</td>\
-        <td>{{item.EndDate | dateFormat_yyyyMMdd}}</td>\
-        <td>{{item.IsOpen | booleanFormat}}</td>\
-        <td>{{item.IsFinished | booleanFormat}}</td>\
-</tr>\
-        </tbody>\
-        </table >\
-            </div>\
-            <div class="modal-footer">\
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
-</div>\
-    </div>\
-</div>\
-</div>',
-                    props: {
-                        details: {
-                            type: Array,
-                            required: true
-                        }
-                    }
-                }
             }
         });
     </script>
