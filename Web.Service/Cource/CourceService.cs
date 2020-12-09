@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Web.Service
     public interface ICourceService
     {
         List<Cource> GetCources();
-        List<CourceDetail> GetCourseDetail(long courseId);
+        List<CourseDetailViewModel> GetCourseDetail(long courseId);
     }
 
     public class CourceService : ICourceService
@@ -26,7 +27,7 @@ namespace Web.Service
             return _courceRepository.GetCources().ToList();
         }
 
-        public List<CourceDetail> GetCourseDetail(long courseId) 
+        public List<CourseDetailViewModel> GetCourseDetail(long courseId) 
         {
             return _courceRepository.GetCourseDetail(courseId).ToList();
         }

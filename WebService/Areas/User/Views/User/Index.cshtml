@@ -153,6 +153,7 @@
             </tr>
         </tbody>
     </table>
+    <course-detail :details ="details"></course-detail>
 </div>
 
 @section Scripts{ 
@@ -271,7 +272,7 @@
             el: '#app-5',
             data: {
                 courses: [],
-                details:[]
+                details: []
             },
             methods: {
                 getCourses: function () {
@@ -295,16 +296,61 @@
                     $.ajax({
                         url: '@Url.Action("GetCourseDetails")',
                         //dataType: 'json',
-                        data: { courseId: item},
+                        data: { courseId: item },
                         type: 'post',
                         beforeSend: function () { },
                         success: function (data) {
                             self.details = data;
-                            console.log(self.details);
+                            $('#courseDetailModal').modal('toggle');
                         },
                         complete: function () { },
                         error: function () { }
                     });
+                }
+            },
+            components: {
+                'course-detail': {
+                    template: '<div id="courseDetailModal" class="modal fade in modal-active">\
+			<div class="modal-dialog">\
+        <div class="modal-content">\
+            <div class="modal-header">\
+                <h4 class="modal-title">開課紀錄</h4>\
+                <button type="button" class="close" data-dismiss="modal"><span >&times;</span></button>\
+            </div>\
+            <div class="modal-body">\
+                    <table class="table table-bordered">\
+        <thead>\
+            <tr>\
+            <th>授課教師</th>\
+            <th>開課日期</th>\
+            <th>結業日期</th>\
+            <th>是否開課</th>\
+            <th>是否結業</th>\
+            </tr>\
+        </thead>\
+        <tbody>\
+        <tr v-for="item in details">\
+        <td>{{item.TeacherName}}</td>\
+        <td>{{item.StartDate | dateFormat_yyyyMMdd}}</td>\
+        <td>{{item.EndDate | dateFormat_yyyyMMdd}}</td>\
+        <td>{{item.IsOpen | booleanFormat}}</td>\
+        <td>{{item.IsFinished | booleanFormat}}</td>\
+</tr>\
+        </tbody>\
+        </table >\
+            </div>\
+            <div class="modal-footer">\
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+</div>\
+    </div>\
+</div>\
+</div>',
+                    props: {
+                        details: {
+                            type: Array,
+                            required: true
+                        }
+                    }
                 }
             }
         });
