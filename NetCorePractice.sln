@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InitData", "InitData", "{C7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{119571AE-4C49-4959-8A7F-19366C7AF426}"
 	ProjectSection(SolutionItems) = preProject
+		InitData\SQL\0.Schema.Core.sql = InitData\SQL\0.Schema.Core.sql
 		InitData\SQL\Core.Cource.Table.sql = InitData\SQL\Core.Cource.Table.sql
 		InitData\SQL\Core.CourceDetail.Table.sql = InitData\SQL\Core.CourceDetail.Table.sql
 		InitData\SQL\Core.Department.Table.sql = InitData\SQL\Core.Department.Table.sql
